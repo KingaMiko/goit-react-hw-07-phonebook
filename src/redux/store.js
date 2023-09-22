@@ -3,7 +3,8 @@ import {
   combineReducers,
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
-import { contactsReducer, filterReducer } from './slices';
+import { contactsReducer } from './contactsSlice';
+import { filterReducer } from './filterSlice';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 

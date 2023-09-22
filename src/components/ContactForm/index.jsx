@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/slices';
+import { addContact } from 'redux/contactsSlice';
 import { useForm } from '../hooks/useForm';
 import {
   StyledForm,
