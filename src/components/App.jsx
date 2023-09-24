@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact, deleteContact, fetchContacts } from 'redux/operations';
 import { setFilter } from 'redux/filterSlice';
@@ -11,6 +11,7 @@ import {
   selectFilter,
   selectError,
   selectIsLoading,
+  selectVisibleContacts,
 } from 'redux/selectors';
 import {
   StyledAllContacts,
@@ -25,35 +26,36 @@ const App = () => {
   const filter = useSelector(selectFilter);
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
+  const visibleContacts = useSelector(selectVisibleContacts);
 
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  const handleSubmit = async values => {
-    try {
-      dispatch(addContact(values));
-    } catch (error) {
-      alert(error.message);
-    }
-  };
+  const handleSubmit = useCallback(
+    async values => {
+      try {
+        await dispatch(addContact(values));
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    [dispatch]
+  );
 
-  const handleFilterChange = e => {
-    dispatch(setFilter(e.target.value));
-  };
+  const handleFilterChange = useCallback(
+    e => {
+      dispatch(setFilter(e.target.value));
+    },
+    [dispatch]
+  );
 
-  const handleDelete = id => {
-    dispatch(deleteContact(id));
-  };
-
-  const getVisibleContacts = () => {
-    const normalizedFilter = filter.toLowerCase();
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizedFilter)
-    );
-  };
-
-  const visibleContacts = getVisibleContacts();
+  const handleDelete = useCallback(
+    id => {
+      dispatch(deleteContact(id));
+    },
+    [dispatch]
+  );
 
   return (
     <Wrapper>
@@ -63,6 +65,7 @@ const App = () => {
       <StyledAllContacts>All contacts: {contacts.length}</StyledAllContacts>
       <Filter value={filter} onChange={handleFilterChange} />
       {isLoading && !error && <b>Request in progress...</b>}
+      {error && <div style={{ color: 'red' }}>{error.message}</div>}
       {visibleContacts.length > 0 ? (
         <ContactList
           contacts={visibleContacts}
