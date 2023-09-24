@@ -18,7 +18,7 @@ li {
   list-style: none;
 }
 
-input { 
+input {
   outline: none;
 }
 
@@ -28,7 +28,7 @@ button {
   display: block;
   width: 120px;
   height: 30px;
-  margin: 0px auto;
+
   text-align: center;
   color: black;
   border: none;
@@ -37,7 +37,6 @@ button {
   box-shadow: 0 1px #999;
   transition: all 0.1s ease-out;
   font-weight: 500;
-  margin: auto;
 }
 
 button:hover {
